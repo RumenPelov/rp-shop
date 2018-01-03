@@ -1,0 +1,214 @@
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-custom  navbar-fixed-top" role="navigation">
+  <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" [routerLink]="['']" style="color: #fff;">MongoShop</a>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+      
+    
+        <li class="nav-link" *ngIf="!auth.loggedIn()">
+          <a href="#" data-toggle="modal" data-target="#myModalLogin">
+              <span class="glyphicon glyphicon-log-in"></span> Log In</a>
+        </li>
+        
+        <li class="nav-link" *ngIf="!auth.loggedIn()">
+            <a href="#" #openBtn data-toggle="modal" data-target="#myModalSignup">
+                <span class="glyphicon glyphicon-user"></span> SignUp</a>
+        </li>
+    
+        <li>
+          <a href="#"  *ngIf="auth.loggedIn()" >hi {{auth.user.username }}</a>
+        </li>
+        <li>
+          <a href="#" *ngIf="auth.loggedIn()" (click)="logout()" >LogOut</a>
+        </li>
+     
+        
+              
+            <li>
+                  <a  ><span>Locations</span></a>
+              </li>
+<!--               <li class="nav-link">
+                  <a href="#"><strong>Admin Panel</strong></a>
+              </li> -->
+          </ul>
+          <div class="collapse navbar-collapse">
+              <form class="navbar-form navbar-right" role="search" >
+                  <div class="form-group">
+                      <input type="text"
+                      class="form-control" 
+                      name="query" placeholder="Search"
+                      ngModel
+                      #query="ngModel">
+                  </div>
+                  <button type="button"
+                  [routerLink]="['/search']" [queryParams]="{query:query.value}"
+                   class="btn btn-default">Submit</button>
+                  <a [routerLink]="['/user', auth.user.username ,'cart']" class="btn btn-success">
+                          <span class="glyphicon glyphicon-shopping-cart"  aria-hidden="true"></span> Cart
+                  </a>
+              </form>
+
+          </div>
+
+      </div>
+
+
+      <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav>
+  
+    <!-- Modal login -->
+    <div class="modal fade" id="myModalLogin" role="dialog">
+      <div class="modal-dialog modal-sm">
+      
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header" style="padding:10px 10px 10px 30px;">
+            <button type="button" #closeLogin class="close" data-dismiss="modal">&times;</button>
+            <h4><strong>Login</strong> </h4>
+          </div>
+          <div class="modal-body" style="padding: 20px 30px;">
+            <form role="form" novalidate [formGroup]="myLoginform"
+            (ngSubmit)="onLoginSubmit()">
+              <div class="form-group"
+              [ngClass]="{
+                'has-warning':  Login.username.invalid && (Login.username.dirty || Login.username.touched),
+                'has-success': Login.username.valid && (Login.username.dirty || Login.username.touched)
+              }">
+                <label> Username</label>
+                <input type="text" class="form-control" placeholder="Enter email"
+                formControlName="username">
+              </div>
+              <div class="form-group"
+              [ngClass]="{
+                'has-warning':  Login.password.invalid && (Login.password.dirty || Login.password.touched),
+                'has-success': Login.password.valid && (Login.password.dirty || Login.password.touched)
+              }">
+                <label> Password</label>
+                <input type="password" class="form-control" placeholder="Enter password"
+                formControlName="password">
+                <p class="text-danger"
+                *ngIf="Login.password.pristine" >{{Login.loginError}}</p>
+              </div>
+              
+              <div class="checkbox">
+                <label><input type="checkbox" value="" checked>Remember me</label>
+              </div>
+                <button type="submit" [disabled]="myLoginform.invalid" class="btn btn-info btn-block"><span class="glyphicon glyphicon-off"></span> Login</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <p>Not a member? <a href="#" (click)="openSignUpModal()" data-dismiss="modal" >Sign Up</a></p>
+            <p>Forgot <a href="#">Password?</a></p>
+          </div>
+        </div>
+        
+      </div>
+    </div> 
+
+
+
+ <!-- Modal Sign Up -->
+ <div class="modal " id="myModalSignup" role="dialog">
+    <div class="modal-dialog modal-sm">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="padding:10px 10px 10px 30px;">
+          <button type="button" #closeSignup class="close" data-dismiss="modal">&times;</button>
+          <h4><strong>SignUp</strong> </h4>
+        </div>
+        <div class="modal-body" style="padding: 20px 30px;">
+          <form role="form"  novalidate [formGroup]="mySignupform"
+          (ngSubmit)="onSignupSubmit()">
+            <div class="form-group"
+            [ngClass]="{
+              'has-error':  Signup.username.invalid && (Signup.username.dirty || Signup.username.touched),
+              'has-success': Signup.username.valid && (Signup.username.dirty || Signup.username.touched)
+            }">
+              <label> Username</label>
+              <input type="text" class="form-control" placeholder="Enter username"
+               formControlName="username">
+              <p class="text-danger"
+              *ngIf="Signup.username.pristine">{{Signup.username_error}}</p>
+              <div class="text-danger"
+              *ngIf="Signup.username.errors && (Signup.username.dirty || Signup.username.touched)">
+               <p *ngIf="Signup.username.errors.pattern">Invalid user name try just letters and numbers</p>
+             
+              </div>
+            </div>
+
+            <div class="form-group"
+            [ngClass]="{
+              'has-error has-feedback':  Signup.password.invalid && (Signup.password.dirty || Signup.password.touched),
+              'has-success': Signup.password.valid && (Signup.password.dirty || Signup.password.touched)
+            }">
+              <label> Password</label>
+              <input type="password" class="form-control" placeholder="Enter password"
+              formControlName="password">
+              <div class="text-danger"
+              *ngIf="Signup.password.errors && (Signup.password.dirty && Signup.password.touched)">
+               <p *ngIf="Signup.password.errors.required">Password is required</p>
+               <p *ngIf="Signup.password.errors.minlength && Signup.password.errors.required!=true">Password must be at least 6 characters long</p>
+              </div>
+            </div>
+           
+
+            <div class="form-group"
+            [ngClass]="{
+              'has-error':  Signup.verify.invalid && (Signup.verify.dirty || Signup.verify.touched),
+              'has-success': Signup.verify.valid && (Signup.verify.dirty || Signup.verify.touched),
+              'has-error':  Signup.verify.value!=Signup.password.value && Signup.verify.dirty
+            }">
+				<label>Verify Password</label>
+        <input type="password" class="form-control" placeholder="Verify password"
+        formControlName="verify">
+				<div class="text-danger"
+        *ngIf="Signup.verify.errors && (Signup.verify.dirty || Signup.verify.touched)">
+         <p *ngIf="Signup.verify.errors.required && Signup.verify.dirty">password is required</p>
+        </div>
+        <div class="text-danger"
+        *ngIf="Signup.password.dirty && Signup.verify.dirty">
+         <p *ngIf="Signup.verify.value!=Signup.password.value && Signup.verify.value.length>=Signup.password.value.length"
+         >password must match</p>
+        </div>
+			</div>		
+      <div class="form-group"
+      [ngClass]="{
+        'has-warning':  Signup.email.invalid && (Signup.email.dirty || Signup.email.touched),
+        'has-success': Signup.email.valid && (Signup.email.dirty || Signup.email.touched)
+      }">
+				<label>Email (optional)</label>
+        <input type="email"  class="form-control" placeholder="Enter email"
+        formControlName="email">
+        <div class="text-danger"
+				*ngIf="Signup.email.errors && (Signup.email.dirty && Signup.email.touched)">
+        <p *ngIf="Signup.email.errors.pattern">invalid email address</p>
+       </div>
+			</div>		
+            <div class="checkbox">
+              <label><input type="checkbox" value="" checked>Remember me</label>
+            </div>
+              <button type="submit" [disabled]="mySignupform.invalid" class="btn btn-info btn-block"><span class="glyphicon"></span> SignUp</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <p>Already a member? <a href="#"data-dismiss="modal"  data-toggle="modal" data-target="#myModalLogin" >Log In</a></p>
+        </div>
+      </div>
+      
+    </div>
+  </div> 
+

@@ -1,0 +1,26 @@
+  .navbar-custom {
+    /* background-color: #3071a9; */ 
+    background: #1A548F;
+    border: none;
+  }  
+
+  .nav > li > a:hover {
+     text-decoration: none;
+    color: #ffffff;
+   }
+
+  .navbar-nav > li > a {
+    color: #c4c4c4; 
+
+     } 
+
+
+   *:focus  {
+      outline: none !important ;  
+ }
+  
+
+/*     .navbar-nav > li > a > span {
+      color:  #aaaaaa;
+       }  */
+
