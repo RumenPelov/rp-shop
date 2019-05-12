@@ -1,73 +1,67 @@
 var express = require('express'),
-
     ItemDAO = require('./services/items').ItemDAO;
-
 
 function ItemRouts(database) {
     "use strict";
-    
 	var items = new ItemDAO(database);
-	
 	this.router = express.Router();
 
-    this.router.get("/:itemId", function(req, res) {
+    this.router.get("/:itemId", async function(req, res) {
         "use strict";
-
-        var itemId = parseInt(req.params.itemId);
-
-        items.getItem(itemId, function(item) {
-        // console.log(item);
-
+        const itemId = parseInt(req.params.itemId);
+        try{
+            const item = await items.getItem(itemId);
             if (item == null) {
                 res.status(404).send("Item not found.");
                 return;
             }
-            
-            var stars = 0;
-            var numReviews = 0;
-            var reviews = [];
+            let stars = 0,
+                numReviews = 0,
+                reviews = [];
             
             if ("reviews" in item) {
                 numReviews = item.reviews.length;
-
+    
                 for (var i=0; i<numReviews; i++) {
-                    var review = item.reviews[i];
+                    let review = item.reviews[i];
                     stars += review.stars;
                 }
-
                 if (numReviews > 0) {
                     stars = stars / numReviews;
                     reviews = item.reviews;
                 }
             }
-
-            items.getRelatedItems(function(relatedItems) {
+            const relatedItems = await items.getRelatedItems();
                 
-                res.status(201).json({ 
-                            item: item,
-                            stars: stars,
-                            reviews: reviews,
-                            numReviews: numReviews,
-                            relatedItems: relatedItems
-                        });
-            });
-        });
+            res.status(201).json({ 
+                        item,
+                        stars,
+                        reviews,
+                        numReviews,
+                        relatedItems
+                    });
+        } catch(error) {
+			res.status(500).json({
+				error:"Internal server error. Please try again later"
+			});
+		}    
     });
 
-    this.router.post("/:itemId/reviews", function(req, res) {
+    this.router.post("/:itemId/reviews",async function(req, res) {
         "use strict";
-
-        var itemId = parseInt(req.params.itemId);
-        var review = req.body.review;
-        var name = req.body.name;
-        var stars = parseInt(req.body.stars);
-
-        items.addReview(itemId, review, name, stars, function(itemDoc) {
+        const itemId = parseInt(req.params.itemId);
+        const review = req.body.review;
+        const name = req.body.name;
+        const stars = parseInt(req.body.stars);
+        try{
+            const itemDoc = await items.addReview(itemId, review, name, stars);
             res.status(201).json({ itemId: itemId});
-        });
+        } catch(error) {
+			res.status(500).json({
+				error:"Internal server error. Please try again later"
+			});
+		}    
     });
-
-    
 }
 
 module.exports.ItemRouts = ItemRouts;

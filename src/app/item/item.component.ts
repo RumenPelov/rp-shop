@@ -12,31 +12,23 @@ import { CartService } from "../_services/cart.service";
 })
 export class ItemComponent implements OnInit {
   data: ItemData= new ItemData();
+  imgUrl: String ;
   private sub:any;
-  private sixStars: any=Array.from(Array(5).keys());
-  @ViewChild('f') form: any;
-  private model;
 
   constructor(private serv: ServerService,
               private route: ActivatedRoute,
               private router: Router,
               private auth:AuthService,
-              private cartServ:CartService) {
-                this.model = {
-                  stars: 5,
-                  name:"",
-                  review:""
-              };
-               }
+              private cartServ:CartService) { }
 
   ngOnInit() {
-    this.sub=this.route
-    .params
-    .subscribe(params => {
-      this.getItem(params['itemId']);
-
-      window.scrollTo(0, 0);
-    });
+    this.sub= this.route
+              .params
+              .subscribe(params => {
+                this.getItem(params['itemId']);
+          
+                window.scrollTo(0, 0);
+              });
   }
 
   getItem(itemId:any){
@@ -44,32 +36,16 @@ export class ItemComponent implements OnInit {
     this.serv.getItem(itemId)
     .subscribe(
       data => {
-        this.data.item=data.item,
-        this.data.stars=data.stars,
-        this.data.reviews=data.reviews,
-        this.data.numReviews=data.numReviews,
-        this.data.relatedItems=data.relatedItems
+        this.data.item=data.item;
+        this.data.stars=data.stars;
+        this.data.reviews=data.reviews;
+        this.data.numReviews=data.numReviews;
+        this.data.relatedItems=data.relatedItems;
+
+        this.imgUrl="assets/" + data.item.img_url;
       },
       error => console.error("error")
     );
-  }
-
-  onSubmit(){
-    if (this.form.valid) {
-      console.log("Form Submitted!");
-      this.serv.postReview(this.model.review, this.model.name,this.model.stars, this.data.item._id )
-      .subscribe(
-        data => {
-          this.model.name='';
-          this.model.review='';
-          this.model.stars=5;
-
-          this.getItem(data.itemId);
-          window.scrollTo(0, 0);
-        },
-        error => console.error("error")
-      );
-    }
   }
 
   addToCart(itemId:any){

@@ -8,12 +8,12 @@ export class OnlyLoggedInGuard implements CanActivate{
     };
 
     canActivate() {
+      if (this.auth.loggedIn()) {
+        return true;
+      } else {
         console.log("OnlyLoggedInUsers");
-        if (this.auth.loggedIn()) {
-          return true;
-        } else {
-          window.alert("Please log in to view cart");
-          return false;
-        }
+        window.alert("Please log in to view cart");
+        return false;
       }
+    }
 }

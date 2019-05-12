@@ -1,83 +1,64 @@
 <!-- Page Content -->
 <div class="container">
-    
-        <div class="row">
-            <div class="col-md-12">
-                <ol class="breadcrumb">
-                    <li><a [routerLink]="['']">Home</a></li>
-                    <li class="active">Cart</li>
-                    <p class="pull-right"
-                    *ngIf="auth.loggedIn() && cartServ.getCart().total!=0" >Cart total: {{cartServ.getCart().total|currency:'USD':'true' }}</p>
-                </ol>
-            </div>
-        </div>
-    
-
-            <p *ngIf="cart.updated" 
-            class="bg-warning" style="padding: 15px; font-size: 14px;">
-                Your cart has been successfully updated.
-            </p>
-
-    
-        <div class="row">
-            <div class="col-md-12" >
-                <table class="table table-bordered table-striped">
-                    <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Image</th>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Total</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                       
-                    <tr  *ngFor="let item of cart.cart?.items">
-                        
-                            <td><a [routerLink]="['/item', item._id]" >{{item.title}}</a></td>
-                            <td class="muted center_text"><a [routerLink]="['/item', item._id]"><img width="300" src="/static/{{item.img_url}}"></a></td>
-                            <td>
-                                <select name="quantity" (change)="onChange($event.target.value,  item._id)">
-                                    <option value="0">0 (Remove)</option>
-
-                                    <option *ngFor="let i of opt"  value="{{i}}" [selected]="item.quantity == i" >{{i}}</option>
-                              
-                                </select>
-                            </td>
-                            <td>
-                                {{item.price|number : '1.2-2'}}
-                            </td>
-                            <td>
-                                {{(item.price * item.quantity)|number : '1.2-2'}}
-                            </td>
-                      
-                     
-                    </tr>
-              
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td><strong>{{cart.total|number : '1.2-2'}}</strong></td>
-                    </tr>
-                    </tbody>
-                
-                </table>
-    
-            </div>
-    
-    
-    
-            <div class="row">
-                <div class="col-md-12" style="text-align:right; padding-right: 30px;">
-                    <button class="btn btn-success" type="submit">Proceed to Checkout</button>
-                </div>
-            </div>
-        </div>
-    
-    
-    
-    </div>
-    <!-- /.container -->
+  <!-- Breadcrumb -->
+  <breadcrumb [params] = "[{route:[''], text: 'Home'},
+              {text: 'Cart' }]">
+  </breadcrumb>
+  <!-- Update Notification -->
+	<div *ngIf="cart.updated" class="alert alert-info" role="alert">
+		Your cart has been successfully updated
+	</div>
+  <!-- Cart Table -->
+	<div class="row">
+		<div class="col-md-12" >
+			<div class="table-responsive-sm" >
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th class="py-1">Product Name</th>
+							<th class="py-1">Image</th>
+							<th class="py-1">Quantity</th>
+							<th class="py-1">Unit Price</th>
+							<th class="py-1">Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="text-right" *ngFor="let item of cart.cart?.items">		
+							<td><a class="text-custom" [routerLink]="['/item', item._id]" >{{item.title}}</a></td>
+							<td class="muted center_text"><a [routerLink]="['/item', item._id]"><img class="img-fluid" src="assets{{item.img_url}}"></a></td>
+							<td>
+								<select name="quantity" (change)="onChange($event.target.value,  item._id)">
+									<option value="0">
+										0 (Remove)
+									</option>
+									<option *ngFor="let i of opt"  value="{{i}}" [selected]="item.quantity == i" >
+										{{i}}
+									</option>
+								</select>
+							</td>
+							<td>
+								{{item.price|number : '1.2-2'|currency:'USD'}}
+							</td>
+							<td>
+								{{(item.price * item.quantity)|number : '1.2-2'|currency:'USD'}}
+							</td>
+						</tr>
+				
+						<tr class="text-right">
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>Total:</td>
+							<td><strong>{{cart.total|number : '1.2-2'|currency:'USD'}}</strong></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 text-right" >
+			<button class="btn btn-success" type="submit">Proceed to Checkout</button>
+		</div>
+	</div>
+</div>

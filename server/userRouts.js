@@ -1,103 +1,96 @@
 var express = require('express'),
-	expressJwt = require('express-jwt'),
-	jwt = require('jsonwebtoken'),
-
 	ItemDAO = require('./services/items').ItemDAO,
 	CartDAO = require('./services/cart').CartDAO;
-
-
 
 function UserRouts(database) {
 	"use strict";
 
-	
-	var items = new ItemDAO(database);
-	var cart = new CartDAO(database);
+	let items = new ItemDAO(database);
+	let cart = new CartDAO(database);
 	
 	this.router = express.Router();
 	
-	
-	this.router.get("/:userId/cart", function(req, res) {
+	this.router.get("/:userId/cart", async function(req, res) {
         "use strict";
+        let userId = req.params.userId;
+        try{
+            const userCart = await cart.getCart(userId);
+            const total = cartTotal(userCart);
 
-        var userId = req.params.userId;
-        cart.getCart(userId, function(userCart) {
-            var total = cartTotal(userCart);
             res.status(201).json({
-                           username: userId,
-                           updated: false,
-                           cart: userCart,
-                           total: total
-                       });
-        });
+                    username: userId,
+                    updated: false,
+                    cart: userCart,
+                    total: total
+                });
+        } catch(error) {
+			res.status(500).json({
+				error:"Internal server error. Please try again later"
+			});
+		}
     });
 	
-	this.router.post("/:userId/cart/:itemId/quantity", function(req, res) {
+	this.router.post("/:userId/cart/:itemId/quantity", async function(req, res) {
         "use strict";
         
-        var userId = req.params.userId;
-        var itemId = parseInt(req.params.itemId);
-        var quantity = parseInt(req.body.quantity);
-
-        cart.updateQuantity(userId, itemId, quantity, function(userCart) {
-            var total = cartTotal(userCart);
+        const userId = req.params.userId;
+        const itemId = parseInt(req.params.itemId);
+        const quantity = parseInt(req.body.quantity);
+        try {
+            const userCart= await cart.updateQuantity(userId, itemId, quantity);
+            let total = cartTotal(userCart);
+    
             res.status(201).json({
-                           username: userId,
-                           updated: true,
-                           cart: userCart,
-                           total: total
-                       });
-        });
+                    username: userId,
+                    updated: true,
+                    cart: userCart,
+                    total: total
+                });
+        } catch(error) {
+			res.status(500).json({
+				error:"Internal server error. Please try again later"
+			});
+		}
     });
 	
-	
-	   this. router.post("/:userId/cart/items/:itemId", function(req, res) {
+    this. router.post("/:userId/cart/items/:itemId", async function(req, res) {
         "use strict";
-
-        var userId = req.params.userId;
-        var itemId = parseInt(req.params.itemId);
-
-        var renderCart = function(userCart) {
-            var total = cartTotal(userCart);
-            res.status(201).json({
-                           username: userId,
-                           updated: true,
-                           cart: userCart,
-                           total: total
-                       });
-        };
-
-        cart.itemInCart(userId, itemId, function(item) {
+        const userId = req.params.userId;
+        const itemId = parseInt(req.params.itemId);
+        let userCart;
+        try{
+            const item = await cart.itemInCart(userId, itemId);
             if (item == null) {
-                items.getItem(itemId, function(item) {
-                    item.quantity = 1;
-                    cart.addItem(userId, item, function(userCart) {
-                        renderCart(userCart);
-                    });
-            
-                });
+                let item = await items.getItem(itemId);
+                item.quantity = 1;
+                userCart = await cart.addItem(userId, item);           
             } else {
-                cart.updateQuantity(userId, itemId, item.quantity+1, function(userCart) {
-                    renderCart(userCart);
-                });
+                userCart = await cart.updateQuantity(userId, itemId, item.quantity+1);
             }
-        });
+            const total = cartTotal(userCart);
+
+            res.status(201).json({
+                username: userId,
+                updated: true,
+                cart: userCart,
+                total: total
+            });
+        } catch(error) {
+			res.status(500).json({
+				error:"Internal server error. Please try again later"
+			});
+		}
     });
-	
-	
 }
 
 function cartTotal(userCart) {
-        "use strict";
-
-        var total = 0;
-        for (var i=0; i<userCart.items.length; i++) {
-            var item = userCart.items[i];
-            total += item.price * item.quantity;
-        }
-
-        return total;
+    "use strict";
+    var total = 0;
+    for (var i=0; i<userCart.items.length; i++) {
+        var item = userCart.items[i];
+        total += item.price * item.quantity;
     }
-
+    return total;
+}
 
 module.exports.UserRouts = UserRouts;

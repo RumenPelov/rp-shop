@@ -13,9 +13,9 @@ import { Data } from "../_services/data";
   providers: []
 })
 export class HomeComponent implements OnInit {
-  private data: Data = new Data();
-  private pages: Number[];
   private sub:any;
+  data: Data = new Data();
+  pages: Number[];
 
   constructor(private serv: ServerService,
               private route: ActivatedRoute,
@@ -25,11 +25,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.sub=this.route
-    .queryParams
-    .subscribe(params => {
-      this.getData(params['category'],params['page']);
-    });
-
+              .queryParams
+              .subscribe(params => {
+                this.getData(params['category'],params['page']);
+              });
   }
 
   getData(category?:String, page?:Number){
@@ -38,14 +37,16 @@ export class HomeComponent implements OnInit {
     this.serv.getData(cat,p)
     .subscribe(
       data => {
-        this.data.category_param=data.category_param,
-        this.data.categories=data.categories,
-        this.data.itemCount=data.itemCount,
-        this.data.pages=data.pages,
-        this.data.page=data.page,
-        this.data.items=data.items
+        this.data.category_param=data.category_param;
+        this.data.categories=data.categories;
+        this.data.itemCount=data.itemCount;
+        this.data.pages=data.pages;
+        this.data.page=data.page;
+        this.data.items=data.items;
        
-       this.pages=Array.from(Array(this.data.pages).keys());
+        this.pages=Array.from(Array(this.data.pages).keys());
+
+        this.serv.updateCachedData(data);
       },
       error => console.error("error")
     );

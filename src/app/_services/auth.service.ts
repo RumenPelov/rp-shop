@@ -1,10 +1,10 @@
-import { Http, Response, Headers,RequestOptions  } from "@angular/http";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, EventEmitter } from "@angular/core";
+import { catchError, map, tap } from 'rxjs/operators';
 import 'rxjs/Rx';
 import { Observable } from "rxjs";
-import { JwtHelper } from 'angular2-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { CartService } from "./cart.service";
-
 
 class User{
   constructor(public username: String,
@@ -13,89 +13,78 @@ class User{
 
 @Injectable()
 export class AuthService {
-  private jwtHelper: JwtHelper = new JwtHelper();
-  private Url: String="https://rp-shop.herokuapp.com";
- // private Url: String="http://localhost:5000";
-  public user: User;
-  //public cart: Cart;
+  private jwtHelper: JwtHelperService = new JwtHelperService();
 
-  constructor(private http: Http,
+  private Url: String="http://localhost:5000";
+  public user: User;
+  
+  constructor(private http: HttpClient,
               private cartServ:CartService) {
     this.user=new User("");
-    //this.cart=new Cart();
    }
 
    setOptions(){
-    const headers = new Headers({'Content-Type': 'application/json'});
-    let options = new RequestOptions({headers: headers, withCredentials: true});
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    let options = {headers: headers, withCredentials: true};
     
     return options;
   }
 
   jwt() {
     let token = sessionStorage.getItem('token');
-    const headers = new Headers({'Content-Type': 'application/json'});
+    let headers = new HttpHeaders({'Content-Type': 'application/json'});
     if (token){
-      headers.append('Authorization', 'Bearer ' +token );
+      headers = headers.append('Authorization', 'Bearer ' + token );
     }
-    let options = new RequestOptions({headers: headers, withCredentials: true });
+    let options = {headers: headers, withCredentials: true };
 
     return options;
   }
 
-
-  validateLogin(username:String, password:String){
+  validateLogin(username:String, password:String) : Observable<any>{
     var obj={username:username, password:password };
     const body=JSON.stringify(obj);
 
     return this.http.post(this.Url+'/auth/Login', body, this.setOptions())
-    .map((response: Response) => {
-      return response.json();
-    })
-    .catch((error: Response) => Observable.throw(error.json()));
+    .pipe(
+      catchError((error) => Observable.throw(error) )
+    )
+
   }
 
-  addUser(username:String, password:String, email:String){
+  addUser(username:String, password:String, email:String) : Observable<any>{
     const body={"username":username, "password":password, "email":email };
 
     return this.http.post(this.Url+'/auth/signup', body,  this.setOptions())
-    .map((response: Response) => {
-      return response.json();
-    })
-    .catch((error: Response) => Observable.throw(error.json()));
+    .pipe(
+      catchError((error) => Observable.throw(error) )
+    )
   }
 
 
-  getCart(userId:String){
+  getCart(userId:String): Observable<any>{
     
     return this.http.get(this.Url+`/user/${userId}/cart`, this.jwt())
-    .map((response: Response) => {
-      return response.json();
-    })
-    .catch((error: Response) => Observable.throw(error.json()));
+    .pipe(
+      catchError((error) => Observable.throw(error) )
+    )
   }
 
-  updateCart(quantity:Number, itemId:any){
+  updateCart(quantity:Number, itemId:any): Observable<any>{
     const body={"quantity":quantity};
     return this.http.post(this.Url+`/user/${this.user.username}/cart/${itemId}/quantity`,body, this.jwt())
-    .map((response: Response) => {
-      return response.json();
-    })
-    .catch((error: Response) => Observable.throw(error.json()));
+    .pipe(
+      catchError((error) => Observable.throw(error) )
+    )
   }
 
-  addToCart(userId:String, itemId:string){
+  addToCart(userId:String, itemId:string): Observable<any> {
     const body={};
     return this.http.post(this.Url+`/user/${this.user.username}/cart/items/${itemId}`,body, this.jwt())
-    .map((response: Response) => {
-      return response.json();
-    })
-    .catch((error: Response) => Observable.throw(error.json()));
+    .pipe(
+      catchError((error) => Observable.throw(error) )
+    );
   }
-
-
-
-  
 
   setSession(data){
     sessionStorage.setItem("token", data.token );
@@ -153,8 +142,6 @@ export class AuthService {
     if(token){
       var exptime = this.jwtHelper.decodeToken(token)['exp'];
       var currtime = Math.floor(Date.now() / 1000);
-      console.log(exptime-currtime);
     }
- 
   }
 }

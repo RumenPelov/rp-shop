@@ -1,9 +1,12 @@
 
 # rp-shop
-Ecommerce app Using Angular2, Express and MongoDB
+Ecommerce app Using Angular7, Express and MongoDB
 
 # Technology Stack
-- Angular2
+- Angular7
 - Express
 - MongoDB
+
+# Running:
+- https://rp-shop.herokuapp.com 
 

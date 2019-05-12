@@ -1,0 +1,35 @@
+<!-- Comments Form -->
+<div class="jumbotron px-3 py-4 mt-3">
+  <h5 class="font-weight-normal mt-1">Add a Review</h5>
+  <form 
+    (ngSubmit)="onSubmit()" 
+    role="form"
+    #f="ngForm">
+    <div class="form-group">
+      <label for="review" class="font-weight-bolder">Review:</label>
+      <textarea name="review" class="form-control" rows="3"
+      [(ngModel)]="formValues.review"
+      ></textarea>
+    </div>
+    <div class="form-group">
+      <label for="name" class="font-weight-bolder">Name:</label>
+      <input type="text" class="form-control" 
+      name="name" placeholder="Enter display name (Required)"
+      required
+      [(ngModel)]="formValues.name">
+    </div>
+    <div class="form-group " >
+      <span *ngFor="let num of sixStars">
+        <label class="ml-3 mb-0 ">
+          <input type="radio" name="stars" [(ngModel)]="formValues.stars" [value]="num+1"
+          [checked]="formValues.stars==num"> 
+          <span >
+            {{num+1}} star
+          </span>
+        </label>
+      </span>
+    </div>
+    <button type="submit" class="btn btn-primary bg-custom">Submit Review</button>
+  </form>
+</div>
+<hr>

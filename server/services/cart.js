@@ -1,175 +1,119 @@
-/*
-  Copyright (c)  2017
-*/
-
-
-var MongoClient = require('mongodb').MongoClient,
-    assert = require('assert');
-
 
 function CartDAO(database) {
     "use strict";
-
     this.db = database;
 
-
-    this.getCart = function(userId, callback) {
+    this.getCart = async (userId) => {
         "use strict";
-		var self = this;
-  
-		this.db.collection('cart').findOne({_id: userId}, function(err, doc) {
-        if(err) throw err;
-		
-		var userCart = {
-            userId: userId,
-            items: []
-		}
-		
-		
-		if (doc){
-			userCart.items=doc.items;
-			callback(userCart);
-		}else{
-			self.db.collection('cart').insertOne({_id: userId, items:[]}, function(err, doc) {
-				if(err) throw err;
-				//console.log(doc);
-				callback(userCart);			
-			});
-		}
+        let userCart = { userId, items: [] };
+        try{
+            const doc = await this.db.collection('cart').findOne({_id: userId});
+            if(doc){
+                userCart.items=doc.items;
+            }else{
+            const newcart = await this.db.collection('cart').insertOne({_id: userId, items:[]});
+            }
 
-		}); 
-		
-		
-    }
-
-
-    this.itemInCart = function(userId, itemId, callback) {
-        "use strict";
-
-
-		 
-		 
-		 this.db.collection('cart').findOne({_id:userId, items:{$elemMatch:{ "_id": itemId } }},{"items.$": 1 } , function(err, doc){
-			 
-			 assert.equal(null, err);
-			 
-			 if (doc){
-				var item = doc.items[0];
-				
-				//console.log(item);
-			 
-				callback(item); 
-			 } else {
-				 
-				 callback(null);
-				 
-			 }
-			 
-			 
-		 });
-		 
-
-    }
-
-
-    this.addItem = function(userId, item, callback) {
-        "use strict";
-
-        // Will update the first document found matching the query document.
-        this.db.collection("cart").findOneAndUpdate(
-            // query for the cart with the userId passed as a parameter.
-            {_id: userId},
-
-            {"$push": {items: item}},
-
-            {
-                upsert: true,
-                returnOriginal: false
-            },
-            // Because we specified "returnOriginal: false", this callback
-            // will be passed the updated document as the value of result.
-            function(err, result) {
-                assert.equal(null, err);
-                // To get the actual document updated we need to access the
-                // value field of the result.
-                callback(result.value);
-            });
-
-
-    };
-
-
-    this.updateQuantity = function(userId, itemId, quantity, callback) {
-        "use strict";
-
-
-		
-		 var userCart = {
-            userId: userId,
-            items: []
+            return new Promise((resolve, reject) => {
+				resolve(userCart);
+				});
+        } catch(error) {
+            console.log(error.errmsg);
+			return new Promise((resolve, reject) => {
+				reject(error);
+				});
         }
-		
-		if (quantity > 0){
-			
-			this.db.collection("cart").findOneAndUpdate({ _id:userId, items:{$elemMatch:{ "_id": itemId }}},
-			{$set:{"items.$.quantity":quantity}},
-			{projection: { "items" : 1 }, returnOriginal: false }, 
-			
-			function (err, result){
-				assert.equal(null, err);
-				assert.notEqual(null, result);
-				
-				//console.log(result.value);
-				
-				userCart.items= result.value.items;
-				
-				callback(userCart);
-				
-			} );
-			
-		}else if (quantity==0) {
-			
-			this.db.collection("cart").findOneAndUpdate({ _id:userId},
-			{ $pull: { items: { _id: itemId} } },
-			{projection: { "items" : 1 }, returnOriginal: false }, 
-			
-			function (err, result){
-				assert.equal(null, err);
-				assert.notEqual(null, result);
-				
-			//	console.log(result.value);
-				
-				userCart.items= result.value.items;
-				
-				callback(userCart);
-				
-			} );
-		}
-		
-
-
     }
 
-    this.createDummyItem = function() {
+    this.itemInCart = async (userId, itemId) => {
+        "use strict";   
+        try {
+            const doc = await this.db.collection('cart').findOne({_id:userId, items:{$elemMatch:{ "_id": itemId } }},{"items.$": 1 });
+            let item = null;	 
+            if (doc){
+                item = doc.items[0]; 
+            }
+    
+            return new Promise((resolve, reject) => {
+                            resolve(item);
+                        });
+        } catch(error) {
+            console.log(error.errmsg);
+			return new Promise((resolve, reject) => {
+				reject(error);
+				});
+        }
+    }
+
+    this.addItem = async (userId, item) => {
         "use strict";
-
-        var item = {
-            _id: 1,
-            title: "Gray Hooded Sweatshirt",
-            description: "The top hooded sweatshirt we offer",
-            slogan: "Made of 100% cotton",
-            stars: 0,
-            category: "Apparel",
-            img_url: "/img/products/hoodie.jpg",
-            price: 29.99,
-            quantity: 1,
-            reviews: []
-        };
-
-        return item;
+        try {
+                // Will update the first document found matching the query document.
+            const result = await this.db.collection("cart").findOneAndUpdate(
+            {_id: userId},{"$push": {items: item}},
+            {upsert: true, returnOriginal: false} );
+                // Because we specified "returnOriginal: false", this
+                // will pass the updated document as the value of result.
+            return new Promise((resolve, reject) => {
+            resolve(result.value);
+            });
+        } catch(error) {
+            console.log(error.errmsg);
+			return new Promise((resolve, reject) => {
+                            reject(error);
+                        });
+        }
     }
 
+    this.updateQuantity = async (userId, itemId, quantity) => {
+        "use strict";
+        let userCart = { userId, items: [] };
+        try {
+            if (quantity > 0){
+                const result = await this.db.collection("cart").findOneAndUpdate(
+                    { _id:userId, items:{$elemMatch:{ "_id": itemId }}},
+                    {$set:{"items.$.quantity":quantity}},
+                    {projection: { "items" : 1 }, returnOriginal: false }); 
+                            
+                userCart.items= result.value.items;			
+            } else if (quantity==0) {
+                const result = await this.db.collection("cart").findOneAndUpdate(
+                    { _id:userId}, { $pull: { items: { _id: itemId} } },
+                    {projection: { "items" : 1 }, returnOriginal: false }); 
+                
+                userCart.items= result.value.items;
+            } 
+    
+            return new Promise((resolve, reject) => {
+                resolve(userCart);
+                });
+        } catch(error) {
+            console.log(error.errmsg);
+			return new Promise((resolve, reject) => {
+                            reject(error);
+                        });
+        }
+	}
 }
 
-
 module.exports.CartDAO = CartDAO;
+
+
+
+
+/* createDummyItem = function() {
+    "use strict";
+    var item = {
+        _id: 1,
+        title: "Gray Hooded Sweatshirt",
+        description: "The top hooded sweatshirt we offer",
+        slogan: "Made of 100% cotton",
+        stars: 0,
+        category: "Apparel",
+        img_url: "/img/products/hoodie.jpg",
+        price: 29.99,
+        quantity: 1,
+        reviews: []
+    };
+    return item;
+} */

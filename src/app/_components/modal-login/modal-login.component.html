@@ -1,0 +1,55 @@
+<!-- Modal login -->
+<div class="modal fade" id="myModalLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLoginLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header py-2 pl-4 pr-3" >
+          <h5 class="modal-title" id="myModalLoginLabel">Login</h5>
+          <button type="button" #closeLogin class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body py-3 px-4" >
+          <form role="form" novalidate [formGroup]="myLoginform"
+          (ngSubmit)="onLoginSubmit()">
+            <div class="form-group">
+              <label> Username</label>
+              <input type="text" class="form-control" 
+              [ngClass]="{
+                'is-invalid':  Login.username.invalid && (Login.username.dirty || Login.username.touched),
+                'is-valid': Login.username.valid && (Login.username.dirty || Login.username.touched)
+              }"
+              placeholder="Enter email"
+              formControlName="username">
+            </div>
+            <div class="form-group">
+              <label> Password</label>
+              <input type="password" class="form-control" 
+              [ngClass]="{
+                'is-invalid':  Login.password.invalid && (Login.password.dirty || Login.password.touched),
+                'is-valid': Login.password.valid && (Login.password.dirty || Login.password.touched)
+              }"
+              placeholder="Enter password"
+              formControlName="password">
+              <p class="text-danger"
+              *ngIf="Login.password.pristine" >{{Login.loginError}}</p>
+            </div>
+            
+            <div class="checkbox">
+              <label><input type="checkbox" value="" checked>Remember me</label>
+            </div>
+              <button type="submit" [disabled]="myLoginform.invalid" class="btn btn-info btn-block">
+                <span class="glyphicon glyphicon-off"></span> Login</button>
+          </form>
+        </div>
+        <div class="modal-footer px-4 flex-column align-items-end">
+          <div class="mr-0">Not a member? 
+            <a href="#"  data-dismiss="modal" data-toggle="modal" data-target="#myModalSignup">
+              Sign Up
+            </a>
+          </div>
+          <div>Forgot <a href="#" data-dismiss="modal">Password?</a></div>
+        </div>
+      </div>
+    </div>
+  </div> 

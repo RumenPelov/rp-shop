@@ -1,0 +1,23 @@
+<nav aria-label="breadcrumb " class="">
+  <ol class="breadcrumb my-4 py-2" >
+    <li *ngFor="let param of params; let i = index " 
+         class="breadcrumb-item"
+         [ngClass]="{
+          'active flex-grow-1': i == params.length-1 }" 
+          >
+      <a *ngIf="param.route" class="text-custom" 
+         [routerLink]="param.route"
+         [queryParams]="param.query ? param.query : {}"
+      >
+        {{param.text}} 
+      </a>
+      <span *ngIf="!param.route" >
+          {{param.text}} 
+      </span>
+    </li>
+    <span class=""
+          *ngIf="auth.loggedIn() && cartServ.getCart().total!=0" >
+            Cart total: {{cartServ.getCart().total|currency:'USD' }}
+    </span>
+  </ol>
+</nav>

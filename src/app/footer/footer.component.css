@@ -1,6 +1,6 @@
 
   
-  footer {
+  .footer-custom {
     position: relative;
     margin-top: 20px; 
     bottom: 0;
@@ -8,14 +8,7 @@
     height: 40px;
     background-color: #f5f5f5;
   }
-  /* Custom page CSS */
-  .container {
-    width: auto;
-    max-width: 680px;
-    padding: 0 30px;
-    margin-left: 0px;
-  }
-  .container .text-muted {
-    margin: 11px 0;
+
+  .text-footer-custom {
     font-size: 12px;
   }

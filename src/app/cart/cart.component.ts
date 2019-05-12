@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { AuthService } from "../_services/auth.service";
 import { CartService } from "../_services/cart.service";
 
@@ -11,10 +11,10 @@ import { CartService } from "../_services/cart.service";
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  private cart: any;
   private subRout: Subscription;
   private subCart: Subscription;
   private opt: Number[]=Array.from(Array(26).keys()).slice(1);
+  cart: any;
 
   constructor(private auth: AuthService,
               private route: ActivatedRoute,

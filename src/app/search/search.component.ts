@@ -9,9 +9,10 @@ import { Data } from "../_services/data";
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-  private data: Data = new Data();
-  private pages: Number[];
   private sub:any;
+  data: Data = new Data();
+  pages: Number[];
+  
 
   constructor(private serv: ServerService,
               private route: ActivatedRoute,

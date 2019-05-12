@@ -1,26 +1,46 @@
-  .navbar-custom {
+  .bg-custom-color {
     /* background-color: #3071a9; */ 
     background: #1A548F;
     border: none;
   }  
 
-  .nav > li > a:hover {
-     text-decoration: none;
-    color: #ffffff;
-   }
+  .login_icon {
+    height: 1em;
+    width: 1em;
+    margin-bottom: .1em;
+    fill: currentColor ;
+  }
 
-  .navbar-nav > li > a {
-    color: #c4c4c4; 
+  .user_icon {
+    height: .9em;
+    width: .9em;
+    margin-bottom: .2em;
+    fill: currentColor ;
+  }
 
-     } 
+  .cart_icon {
+    height: 1em;
+    width: 1em;
+    margin-bottom: .2em;
+    fill: currentColor ;
+  }
 
+  .menu_icon {
+    height: 2em;
+    width: 2em;
+    fill: currentColor ;
+  }
 
-   *:focus  {
-      outline: none !important ;  
- }
-  
+  .no-outline{
+    outline: none;
+  }
 
-/*     .navbar-nav > li > a > span {
-      color:  #aaaaaa;
-       }  */
+  .text-custom-nav{
+    color: #cbd3da
+  }
+
+  .text-custom-nav:hover{
+    color: #f8f9fa;
+  }
+
 

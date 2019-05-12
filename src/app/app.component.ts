@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit,ElementRef } from '@angular/core';
+import { Component, ViewChild, AfterViewInit,ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,14 +6,23 @@ import { Component, OnInit, ViewChild, AfterViewInit,ElementRef } from '@angular
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  clientHeight: number;
-  footerHeight: number;
+  clientHeight: number ;
+  footerHeight: number = 0;
   @ViewChild("footer") footerDiv: ElementRef;
   
-  constructor() {
+   ngOnInit() {
     this.clientHeight = window.innerHeight; 
- }
- ngAfterViewInit() {
-   this.footerHeight=this.footerDiv.nativeElement.offsetHeight+20 + 70; 
- }
+    
+   }
+   ngAfterViewInit() {
+    this.updateMessage();
+   }
+
+   updateMessage(){
+    setTimeout(() => {
+      this.footerHeight=this.footerDiv.nativeElement.offsetHeight+20 + 70;
+    }, 0)
+  }
+
+
  }

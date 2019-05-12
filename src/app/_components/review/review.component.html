@@ -1,0 +1,19 @@
+ <!-- Review -->
+<div class="mb-2">
+    <h5 class="font-weight-normal mb-0">{{review.name}}
+      <small>{{review.date|date}}</small>
+    </h5>
+    <!-- Review Rating -->
+    <div class="rating-custom">
+      <span *ngFor="let num of sixStars">
+        <svg class="star_icon" *ngIf="num >= review.stars" >
+          <use xlink:href='assets/svg/sprite.svg#icon-star-outlined'></use>
+        </svg> 
+        <svg class="star_icon" *ngIf="review.stars > num" >
+          <use xlink:href='assets/svg/sprite.svg#icon-star'></use>
+        </svg>
+      </span>
+    </div>
+    {{review.comment}}
+  </div>
+  <hr />

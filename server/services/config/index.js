@@ -1,4 +1,6 @@
 var configValues = require('./config');
+const dotenv = require('dotenv');
+dotenv.config();
 
 var config = {
    uname: process.env.MONGO_USERNAME,
