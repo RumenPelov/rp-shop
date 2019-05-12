@@ -10,8 +10,8 @@ import { Data } from "../_services/data";
 
 @Injectable()
 export class ServerService {
-
-  private Url: String="http://localhost:5000";
+  //private Url: String="https://rp-shop.herokuapp.com/api";
+  private Url: String="http://localhost:5000/api";
   private data: Data = new Data();
 
   constructor(private http: HttpClient) { };

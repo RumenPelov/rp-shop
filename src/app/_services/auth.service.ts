@@ -14,8 +14,8 @@ class User{
 @Injectable()
 export class AuthService {
   private jwtHelper: JwtHelperService = new JwtHelperService();
-
-  private Url: String="http://localhost:5000";
+  //private Url: String="https://rp-shop.herokuapp.com/api";
+  private Url: String="http://localhost:5000/api";
   public user: User;
   
   constructor(private http: HttpClient,

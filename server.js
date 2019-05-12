@@ -52,10 +52,10 @@ MongoClient.connect('mongodb://localhost:27017/mongomart', function(err, db) {
     var count = new countViews(db);
     app.use(count.router);
                 
-    app.use('/item', item.router);
-    app.use('/auth', auth.router);
-    app.use('/user', user.router);
-    app.use('/', main.router);
+    app.use('/api/item', item.router);
+    app.use('/api/auth', auth.router);
+    app.use('/api/user', user.router);
+    app.use('/api', main.router);
 
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, 'dist', 'Mongoshop','index.html'));

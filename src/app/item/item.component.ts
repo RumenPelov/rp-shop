@@ -26,7 +26,7 @@ export class ItemComponent implements OnInit {
               .params
               .subscribe(params => {
                 this.getItem(params['itemId']);
-          
+
                 window.scrollTo(0, 0);
               });
   }
