@@ -7,8 +7,10 @@ import {
   Validators,
   FormBuilder
 } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 import { AuthService } from "../../_services/auth.service";
+import { CartService } from "../../_services/cart.service";
 
 class Signup {
   constructor (public username?: FormControl,
@@ -25,12 +27,13 @@ class Signup {
   styleUrls: ['./modal-signup.component.css']
 })
 export class ModalSignupComponent implements OnInit {
-
+  private subCart: Subscription;
   @ViewChild('closeSignup') closeSignup: any;
   mySignupform: FormGroup;
   Signup : Signup = new Signup();
 
-  constructor(private auth:AuthService) { }
+  constructor(private auth:AuthService,
+              private cartServ:CartService) { }
 
   ngOnInit() {
     this.createSignupForm();
@@ -67,6 +70,7 @@ export class ModalSignupComponent implements OnInit {
       .subscribe(
         data => {
             this.auth.setSession(data);
+            this.mergeCarts();
             this.mySignupform.reset();
             this.closeSignup.nativeElement.click();
         },
@@ -81,7 +85,21 @@ export class ModalSignupComponent implements OnInit {
     }
   }
 
+  mergeCarts(){
+    this.subCart = this.auth.onLoginResolveUserGuestCarts()
+        .subscribe(
+          data => {
+            this.cartServ.setCart(data);
+          },
+          error => console.error("error")
+        );
+  }
+
   validateVerify(){
     return this.Signup.verify.value==this.Signup.password.value;
+  }
+
+  ngOnDestroy() {
+    this.subCart.unsubscribe();
   }
 }

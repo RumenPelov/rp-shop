@@ -4,6 +4,7 @@ import { ServerService } from "../_services/server.service";
 import { AuthService } from "../_services/auth.service";
 import { CartService } from "../_services/cart.service";
 import { Data } from "../_services/data";
+import { Item} from "../_services/item-data";
 
 
 @Component({
@@ -16,6 +17,7 @@ export class HomeComponent implements OnInit {
   private sub:any;
   data: Data = new Data();
   pages: Number[];
+  list: boolean = false;
 
   constructor(private serv: ServerService,
               private route: ActivatedRoute,
@@ -50,6 +52,30 @@ export class HomeComponent implements OnInit {
       },
       error => console.error("error")
     );
+  }
+
+  addToCart(item:Item){
+
+    if (this.auth.loggedIn()){
+
+      this.auth.addToCart(this.auth.user.username, item._id.toString() )
+      .subscribe(
+        data => {
+          var newCart={ ...data};
+          this.cartServ.setCart(newCart);
+
+          //this.router.navigate([ 'user/cart']);
+        },
+        error => console.error("error")
+      );
+    }else{
+      this.cartServ.guestCartAddItem(item);
+      //this.router.navigate([ 'user/cart']);
+    }
+  }
+
+  toggleList= ()=>{
+    this.list = !this.list;
   }
 
   ngOnDestroy() {

@@ -1,0 +1,41 @@
+
+<!-- Addresses . -->
+
+  <!-- Billing address -->
+<address-form caption= "Billing address"
+              [preFormValues] = "billingFormValues"
+              [isSubmited] = "isSubmited"
+              (validChange) = "BillingFormValidate($event)"
+              (formValues) = "BillingFormUpdate($event)"
+              ></address-form>
+              
+<!-- Select same shipping address -->
+<div class="custom-control custom-checkbox  ">
+<input  type="checkbox" class="custom-control-input" id="same-address"
+        (click)="checkBoxChecked()" 
+        data-toggle="collapse" 
+        data-target="#collapseShippingAddress" 
+        aria-expanded="true" 
+        aria-controls="collapseShippingAddress">
+<label class="custom-control-label" for="same-address">Shipping address is the same as my billing address</label>
+</div>
+
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+
+<div  class="collapse show " id="collapseShippingAddress">
+  <!-- Shipping address -->
+<address-form caption= "Shipping address"
+              [preFormValues] = "shippingFormValues"
+              [isSubmited] = "isSubmited"
+              (validChange) = "ShippingFormValidate($event)"
+              (formValues) = "ShippingFormUpdate($event)"
+></address-form>
+</div>
+
+<button class="btn btn-primary btn-lg btn-block " 
+        type="button" 
+        (click)="onSubmit()" >
+        Continue to checkout
+</button>
+<hr class="mb-4">

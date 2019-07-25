@@ -1,5 +1,5 @@
 <!-- Comments Form -->
-<div class="jumbotron px-3 py-4 mt-3">
+<div class="jumbotron px-3 py-4 mt-2 c-r-container">
   <h5 class="font-weight-normal mt-1">Add a Review</h5>
   <form 
     (ngSubmit)="onSubmit()" 
@@ -18,7 +18,7 @@
       required
       [(ngModel)]="formValues.name">
     </div>
-    <div class="form-group " >
+    <div class="form-group  " >
       <span *ngFor="let num of sixStars">
         <label class="ml-3 mb-0 ">
           <input type="radio" name="stars" [(ngModel)]="formValues.stars" [value]="num+1"
@@ -29,7 +29,7 @@
         </label>
       </span>
     </div>
-    <button type="submit" class="btn btn-primary bg-custom">Submit Review</button>
+    <button type="submit" class="c-btn-outline my-3">Submit Review</button>
   </form>
 </div>
-<hr>
+

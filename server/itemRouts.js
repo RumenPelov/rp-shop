@@ -31,7 +31,7 @@ function ItemRouts(database) {
                     reviews = item.reviews;
                 }
             }
-            const relatedItems = await items.getRelatedItems();
+            const relatedItems = await items.getRelatedItems(item.category);
                 
             res.status(201).json({ 
                         item,

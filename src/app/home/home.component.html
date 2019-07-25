@@ -1,4 +1,12 @@
 <!-- Page Content -->
+<div class="c-img-container">
+  <img src="assets/img/blueW.jpg" alt="..." class="c-h-img">
+  <div class="c-h-text">
+      <h1 class="c-h-h1">mongoshop</h1>
+      <p class="c-h-h2">the accessories store</p>    
+  </div>
+</div>
+
 <div class="container ">
   <!-- Breadcrumb -->
   <breadcrumb [params] = "[{route:[''], text: 'Home'},
@@ -8,23 +16,46 @@
   <!-- /.row -->
   <div class="row ">
     <!-- List categories --> 
-    <div class="col-lg-2">
-      <list-categories [data] = "data"></list-categories>
+    <div class="col-lg-2 col-md-3">
+
+      <button class="custom-btn-category" type="button" (click)="toggleList()" >
+        <span class="">
+          Categories
+        </span>
+        <svg 
+            [ngClass]="{'custom-list': list, 'custom-btn-category-icon custom-list-active': !list }">
+          <use xlink:href='assets/svg/sprite.svg#icon-chevron-small-down'></use>
+        </svg> 
+        <svg [ngClass]="{'custom-list': !list, 'cross-icon custom-list-active': list }">
+          <use xlink:href='assets/svg/sprite.svg#icon-minus'></use>
+        </svg> 
+      </button>
+
+      <list-categories [data] = "data" (click)="toggleList()" 
+          [ngClass]="{'custom-list custom-list-active': list, 'custom-list': !list }">
+      </list-categories>
+      
     </div>
     <!-- Items -->  
-    <div class="col-lg-10 mt-3 mt-md-4 mt-lg-0 ">
-      <div *ngFor="let item of data.items" >
-        <item-card [item] = "item"  buttonText = "View Product" ></item-card>
+    <div class="col-lg-10 col-md-9 mt-4 mt-md-0  ">
+      <div class="items-container">
+        <div *ngFor="let item of data.items" >
+          <card-main [item] = "item"  
+                      buttonText = "Details"
+                      (addToCart)= "addToCart($event)" >
+          </card-main>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Pagination -->
-  <pagination [data]="data" [pages]= "pages"></pagination>
+  <pagination [data]="data" [pages]= "pages" ></pagination>
 
-  <!-- Products count -->
-  <div class="row d-flex justify-content-center" >
-    <i>{{data.itemCount}} Products</i>
-  </div>
 </div>
 
+<!-- Products count 
+<div class="row d-flex justify-content-center" >
+  <i>{{data.itemCount}} Products</i>
+</div>
+-->

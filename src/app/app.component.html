@@ -1,11 +1,11 @@
 <div [ngStyle]="{'min-height': clientHeight-footerHeight + 'px'}" >
   <app-header></app-header>
-  
-  <div class="m-t-1">
-      <router-outlet></router-outlet>
+
+  <div class="m-t-1 c-bg">
+      <router-outlet> </router-outlet>
   </div>
-  </div>
+</div>
   
-  <div #footer>
+<div #footer>
   <app-footer></app-footer>
-  </div>
+</div>

@@ -20,7 +20,7 @@ export class AppComponent implements AfterViewInit {
 
    updateMessage(){
     setTimeout(() => {
-      this.footerHeight=this.footerDiv.nativeElement.offsetHeight+20 + 70;
+      this.footerHeight=this.footerDiv.nativeElement.offsetHeight+20 ;
     }, 0)
   }
 

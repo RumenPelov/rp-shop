@@ -4,6 +4,7 @@ var express = require('express'),
     UserDAO = require('./services/user').UserDAO;
 
 var EXP_MIN=30,
+	EXP_MIN_GUEST=60,
 	 JWT_SECRET=process.env.JWT_SECRET;
 
 function AuthRouts(database){

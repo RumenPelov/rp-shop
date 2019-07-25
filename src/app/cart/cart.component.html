@@ -1,5 +1,5 @@
 <!-- Page Content -->
-<div class="container">
+<div class="container pt-3">
   <!-- Breadcrumb -->
   <breadcrumb [params] = "[{route:[''], text: 'Home'},
               {text: 'Cart' }]">
@@ -8,22 +8,25 @@
 	<div *ngIf="cart.updated" class="alert alert-info" role="alert">
 		Your cart has been successfully updated
 	</div>
+	<div *ngIf="emptyCart" class="alert alert-warning" role="alert">
+		Your cart is empty!
+	</div>
   <!-- Cart Table -->
 	<div class="row">
 		<div class="col-md-12" >
 			<div class="table-responsive-sm" >
-				<table class="table table-bordered table-striped">
+				<table class="table table-bordered ">
 					<thead>
 						<tr>
-							<th class="py-1">Product Name</th>
-							<th class="py-1">Image</th>
-							<th class="py-1">Quantity</th>
-							<th class="py-1">Unit Price</th>
-							<th class="py-1">Total</th>
+							<th class="py-1 text-center">Product Name</th>
+							<th class="py-1 ">Image</th>
+							<th class="py-1 text-center">Quantity</th>
+							<th class="py-1 text-center" >Unit Price</th>
+							<th class="py-1 text-center">Total</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="text-right" *ngFor="let item of cart.cart?.items">		
+						<tr class="text-right" *ngFor="let item of cart?.items">		
 							<td><a class="text-custom" [routerLink]="['/item', item._id]" >{{item.title}}</a></td>
 							<td class="muted center_text"><a [routerLink]="['/item', item._id]"><img class="img-fluid" src="assets{{item.img_url}}"></a></td>
 							<td>
@@ -36,7 +39,7 @@
 									</option>
 								</select>
 							</td>
-							<td>
+							<td class="text-center">
 								{{item.price|number : '1.2-2'|currency:'USD'}}
 							</td>
 							<td>
@@ -57,8 +60,11 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12 text-right" >
-			<button class="btn btn-success" type="submit">Proceed to Checkout</button>
+		<div class="col-md-12 text-right my-4" >
+			<button class="btn btn-outline-success c-b-r" type="button"
+					(click)="openCheckout()">
+				Proceed to Checkout
+			</button>
 		</div>
 	</div>
 </div>

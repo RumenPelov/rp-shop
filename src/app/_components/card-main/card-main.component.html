@@ -1,0 +1,26 @@
+  <!-- Item  -->  
+  <div class="c-card-container">
+    <div class="card c-box" >
+      <img src="assets{{item.img_url}}" class="card-img-top c-card-img" [routerLink]="['/item', item._id]" alt="..." >
+      <div class="card-body pt-4">
+        <h5 class="card-title c-a-center">{{item.title}}</h5>
+        <div class="text-custom py-4 c-card-details">
+          <div class="c-currency" (click)="toCart()">  
+            <h6 class="my-0 mr-1 c-b">{{item.price | currency:'USD'}}</h6>
+            <svg class="c-arrow_icon ">
+                <use xlink:href='assets/svg/sprite.svg#icon-arrow-right'></use>
+            </svg>
+            <svg class="c-cart_icon ">
+                <use xlink:href='assets/svg/sprite.svg#icon-shopping-cart'></use>
+            </svg>
+          </div>
+          <button-main
+            [text]="buttonText" 
+            [routerLink]="['/item', item._id]">
+          </button-main>
+        </div>  
+      </div>
+    </div>  
+  </div>
+
+  

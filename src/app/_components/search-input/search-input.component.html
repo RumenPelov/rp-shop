@@ -1,0 +1,11 @@
+<form class="search-form" #form="ngForm" 
+      (ngSubmit)="onLoginSubmit(form.value)">
+  <label class="search-label" (mouseover)="mouseOver()">
+      <svg class="search-icon" >
+          <use xlink:href='assets/svg/sprite.svg#icon-magnifying-glass'></use>
+      </svg>
+  </label>
+  <input type="text" #input1 class="search-input" 
+         placeholder="Search"
+         name="search" ngModel>
+</form>

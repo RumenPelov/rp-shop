@@ -1,8 +1,9 @@
 export class Cart {
-public username: String ; 
+public username: string ; 
 public updated: boolean;
-public cart: any;
-public total: Number;
+public items: any;
+public total: number;
+public addresses: any ; 
     constructor(){    
     }
 }
@@ -10,6 +11,7 @@ public total: Number;
 export const InitialCart = {
     username: '', 
     updated: false,
-    cart: {},
-    total: 0
+    items: [],
+    total: 0,
+    addresses:null
   }

@@ -36,12 +36,7 @@ export class ItemComponent implements OnInit {
     this.serv.getItem(itemId)
     .subscribe(
       data => {
-        this.data.item=data.item;
-        this.data.stars=data.stars;
-        this.data.reviews=data.reviews;
-        this.data.numReviews=data.numReviews;
-        this.data.relatedItems=data.relatedItems;
-
+        this.data = {...data }
         this.imgUrl="assets/" + data.item.img_url;
       },
       error => console.error("error")
@@ -55,20 +50,17 @@ export class ItemComponent implements OnInit {
       this.auth.addToCart(this.auth.user.username,itemId )
       .subscribe(
         data => {
-          var newCart={
-            username: data.username, 
-            updated: data.updated,
-            cart: data.cart,
-            total: data.total
-          }
-        this.cartServ.setCart(newCart);
+          var newCart={ ...data};
+          this.cartServ.setCart(newCart);
 
-          this.router.navigate([ 'user/'+data.username+'/cart']);
+          this.router.navigate([ 'user/cart']);
         },
         error => console.error("error")
       );
     }else{
-      window.alert("Please log in to view cart");
+      this.cartServ.guestCartAddItem(this.data.item);
+      this.router.navigate([ 'user/cart']);
+      //window.alert("Please log in to view cart");
     }
   }
 

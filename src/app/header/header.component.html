@@ -1,69 +1,68 @@
 <!-- Navigation -->
-<nav class="navbar navbar-expand-md bg-custom-color sticky-top px-md-5" >
-  <a class="navbar-brand" [routerLink]="['']" style="color: #fff;">MongoShop</a>
-  <button class="navbar-toggler no-outline py-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="text-secondary">
-      <svg class="menu_icon  ">
-        <use xlink:href='assets/svg/sprite.svg#icon-menu'></use>
-      </svg> 
-    </span>
-  </button>
-  
-      <!-- Collect the nav links, forms, and other content for toggling -->
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item" *ngIf="!auth.loggedIn()">
-        <a class="nav-link text-custom-nav " href="#" data-toggle="modal" data-target="#myModalLogin">
-            <svg class="login_icon  ">
-              <use xlink:href='assets/svg/sprite.svg#icon-login'></use>
-            </svg> 
-            <span>
-              Log In
-            </span>
-        </a>
-      </li>
-      <li class="nav-item" *ngIf="!auth.loggedIn()">
-        <a class="nav-link text-custom-nav  " href="#" #openBtn data-toggle="modal" data-target="#myModalSignup">
-          <svg class="user_icon  ">
-            <use xlink:href='assets/svg/sprite.svg#icon-user'></use>
-          </svg> 
-          <span >
-            SignUp
-          </span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-light "   *ngIf="auth.loggedIn()" >hi {{auth.user.username }}</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-light " [routerLink]="['']" *ngIf="auth.loggedIn()" (click)="logout()" >LogOut</a>
-      </li>
-        <!--        
-      <li class="nav-item">
-          <a  class="nav-link text-muted disabled" href="#"><span>Locations</span></a>
-      </li>
-      -->
-    </ul>
-
-    <form class="form-inline my-2  my-sm-0  " >
-      <input type="search"
-               class="form-control  my-sm-0  mr-2" 
-               name="query" placeholder="Search" aria-label="Search"
-               ngModel
-               #query="ngModel"> 
-      <button type="submit"
-              class="btn btn-light my-2 my-sm-0  mr-2"
-              [routerLink]="['/search']" [queryParams]="{query:query.value}">
-              Search</button>
-      <button [routerLink]="['/user', auth.user.username ,'cart']" class="btn btn-success my-2 my-sm-0">
-        <svg class="cart_icon  ">
-          <use xlink:href='assets/svg/sprite.svg#icon-shopping-cart'></use>
+<nav class="navbar navbar-expand-sm bg-custom-color sticky-top px-md-5" [@scrollHeader]="state" >
+  <div class="container">
+    <a class="navbar-brand" [routerLink]="['']" style="color: #fff;" > 
+      <content-logo [home]="home" >mongoshop</content-logo>
+    </a>
+    <button class="navbar-toggler no-outline py-0" type="button" (click)="toggleNav()"
+            data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="text-secondary">
+        <svg class="menu_icon  ">
+          <use xlink:href='assets/svg/sprite.svg#icon-menu'></use>
         </svg> 
-        <span>
-          Cart
-        </span>
-      </button>
-    </form>
+      </span>
+    </button>
+    
+        <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" >
+      <div class="mr-auto">
+        <content-right  [toggle]="toggle"  [home]="home">
+          <ul class="navbar-nav mr-auto" >
+            <li class="nav-item" *ngIf="!auth.loggedIn()">
+              <a class="nav-link text-custom-nav " href="#" data-toggle="modal" data-target="#myModalLogin">
+                <svg class="login_icon d-sm-none d-md-inline-block">
+                  <use xlink:href='assets/svg/sprite.svg#icon-login'></use>
+                </svg> 
+                <span>
+                  Log In
+                </span>
+              </a>
+            </li>
+            <li class="nav-item" *ngIf="!auth.loggedIn()">
+              <a class="nav-link text-custom-nav  " href="#" #openBtn data-toggle="modal" data-target="#myModalSignup">
+                <svg class="user_icon d-sm-none d-md-inline-block ">
+                  <use xlink:href='assets/svg/sprite.svg#icon-user'></use>
+                </svg> 
+                <span >
+                  SignUp
+                </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light "   *ngIf="auth.loggedIn()" >hi {{auth.user.username }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light " [routerLink]="['']" *ngIf="auth.loggedIn()" (click)="logout()" >LogOut</a>
+            </li>
+              <!--        
+            <li class="nav-item">
+                <a  class="nav-link text-muted disabled" href="#"><span>Locations</span></a>
+            </li>
+            -->
+          </ul>
+        </content-right>
+      </div> 
+      <div class="form-inline my-2 my-sm-0 justify-content-between" >
+        <search-input [toggle] = "toggle"></search-input>
+        <button [routerLink]="['/user/cart']" 
+                class="custom-cart my-2 my-sm-0 custom-relative ">
+          <span *ngIf="items" >{{items}}</span>
+          <svg class="cart_icon  ">
+            <use xlink:href='assets/svg/sprite.svg#icon-shopping-cart'></use>
+          </svg>         
+        </button>
+      </div>
+    </div>
   </div>
 </nav>
 

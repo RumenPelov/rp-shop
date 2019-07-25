@@ -1,0 +1,77 @@
+<!-- Payment details. -->
+<form [formGroup]="payDetailsForm"
+      (ngSubmit)="onSubmit()" 
+      novalidate>
+  <h5 class="mb-3">Payment details</h5>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="cc-name">Email</label>
+      <input type="email" class="form-control" 
+            [ngClass]="{
+              'is-invalid': payDetails.email.invalid && 
+                            (payDetails.email.dirty || payDetails.email.touched) ||
+                            payAttempted && payDetails.email.invalid,
+              'is-valid': payDetails.email.valid && 
+                          (payDetails.email.dirty || payDetails.email.touched)
+            }"
+            formControlName="email">
+      <small class="text-muted">Your confirmatin receipt will be sent to this email</small>
+      <div class="invalid-feedback">
+        Valid email is required
+      </div>
+    </div>
+  </div>
+  <div class="d-block my-3">
+    <div class="custom-control custom-radio">
+      <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+      <label class="custom-control-label" for="credit">Credit card</label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8 mb-3">
+      <label for="cc-name">Name on card</label>
+      <input type="text" class="form-control" 
+            [ngClass]="{
+              'is-invalid': payDetails.name.invalid && 
+                            (payDetails.name.dirty || payDetails.name.touched) ||
+                            payAttempted && payDetails.name.invalid,
+              'is-valid': payDetails.name.valid && 
+                          (payDetails.name.dirty || payDetails.name.touched)
+            }"
+            formControlName="name">
+      <small class="text-muted">Full name as displayed on card</small>
+      <div class="invalid-feedback">
+        Name on card is required
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 mb-3">
+      <label for="card-info" class="d-flex justify-content-between">
+        <span>Credit card number</span>
+        <span>Exparation (MM/YY) / CVV</span>
+      </label>
+      <div id="card-info" #cardInfo 
+          class="form-control" 
+          [ngClass]="{'is-invalid':  error }"> 
+        <!-- A Stripe Element will be inserted here. -->
+      </div>
+      <!-- Used to display form errors. -->
+      <div id="card-errors"
+          role="alert"
+          class="text-danger"
+          *ngIf="error">{{ error }}
+      </div>
+    </div>
+  </div>
+  <hr class="mb-4">
+  <button class="btn btn-primary btn-lg btn-block" 
+          type="submit"
+          [disabled] = "inProgress">Confirm payment</button>
+
+  <div role="alert"
+      class="text-danger mt-2"
+      *ngIf="transferError">Oops, something went wrong, your payment can't be proccessed at the moment! Please try again later.
+  </div>
+</form>

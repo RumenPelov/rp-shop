@@ -1,0 +1,31 @@
+ <!-- Addresses summary. -->
+<div class="row">
+   <!-- Billing address-->
+  <div class="col-md-6">
+    <h5 class="">Billing address</h5>
+    <address class="mb-md-0">
+        {{address?.billing.firstName}} {{address?.billing.lastName}} <br>
+        {{address?.billing.address}} <br>
+        <span *ngIf="address?.billing.address_2" > {{address?.billing.address_2}} <br> </span>
+        {{address?.billing.state}}, {{address?.billing.zip}} <br>
+        {{address?.billing.country}}
+    </address>
+    
+  </div>
+    <!-- Shipping address-->
+  <div class="col-md-6">
+      <h5 class="">Shipping address</h5>
+      <address class="mb-md-0">
+          {{address?.shipping.firstName}} {{address?.shipping.lastName}} <br>
+          {{address?.shipping.address}} <br>
+          <span *ngIf="address?.shipping.address_2" > {{address?.shipping.address_2}} <br> </span>
+          {{address?.shipping.state}}, {{address?.shipping.zip}} <br>
+          {{address?.shipping.country}}
+      </address>
+  </div>
+</div>
+<div class="row d-flex justify-content-end ">
+<button type="button" (click)="onEdit()" 
+        class="btn btn-link text-muted py-0">Edit</button>
+</div>
+<hr class="mb-4">

@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col-md-8">
+    <h3 class="">Thank you for shopping with us! </h3>
+    <h5>
+      <small>Your payment was succesfull, 
+        comfirmation receipt was sent to your email, 
+        please see details bellow:</small>
+    </h5>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <h6>Confirmation number: {{data._id}}</h6>
+  </div>
+</div>
+<div class="my-3">
+  <h5>Receipt</h5>
+</div>
+ <!-- Addresses summary. -->
+ <div class="row">
+    <!-- Shipping address-->
+  <div class="col-md-6">
+      <h6 class="text-muted">Shipping address</h6>
+      <address>
+          {{address?.shipping.firstName}} {{address?.shipping.lastName}} <br>
+          {{address?.shipping.address}} <br>
+          <span *ngIf="address?.shipping.address_2" > {{address?.shipping.address_2}} <br> </span>
+          {{address?.shipping.state}}, {{address?.shipping.zip}} <br>
+          {{address?.shipping.country}}
+      </address>
+  </div>
+ </div>
+ <!-- Items summary. -->
+<div class="row mt-3 mb-5">
+  <div class="col-md-8">
+    <ul class="list-group mb-3">
+      <li *ngFor="let item of items"  class="list-group-item d-flex justify-content-between lh-condensed">
+        <div>
+          <h6 class="my-0">
+            <span class="text-muted">{{item.quantity}}x</span>
+            {{item.title}}
+          </h6>
+          <small class="text-muted">{{item.slogan}}</small>
+        </div>
+        <span class="text-muted">{{item.price*item.quantity|number : '1.2-2'|currency:'USD'}}</span>
+      </li>
+
+      <li class="list-group-item d-flex justify-content-end">
+          <span>Amount charged (USD):&nbsp;&nbsp;</span>
+          <strong>{{data.amount|currency:'USD'}}</strong>
+        </li>
+    </ul>
+  </div>
+</div>
+ 

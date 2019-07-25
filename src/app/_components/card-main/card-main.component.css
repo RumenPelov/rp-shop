@@ -1,0 +1,105 @@
+.c-card-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 440px;
+}
+
+@media only screen and (min-width:  48em) {
+    .card-container{
+        justify-content: flex-end;
+    }
+}
+
+.c-card-details{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.c-a-center{
+   text-align: center; 
+}
+
+.c-box{
+    width: 83%; 
+    border: none;
+    background-color: transparent;
+    box-shadow: 0 2px 6px -6px gray;
+}
+@media only screen and (max-width:  36em) {
+    .c-box{
+        width: 100%; 
+    }
+}
+
+.c-card-img{
+    cursor: pointer;
+    transition: all .2s;
+    -webkit-transition: all .2s;
+    -moz-transition: all .2s;
+    -ms-transition: all .2s;
+    -o-transition: all .2s;
+}
+.c-card-img:hover{
+
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+}
+
+.c-cart_icon {
+    height: 1.6em;
+    width: 1.6em;
+    margin-left: -6px;
+    fill:  var(--color-primary);
+    opacity: .9;
+  }
+
+.c-arrow_icon {
+    height: 1.1em;
+    width: 1.1em;
+    fill: var(--color-primary);
+    opacity: .9;
+}
+
+.c-currency{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+}
+.c-currency:hover{
+    opacity: .8;
+}
+
+.c-b::before{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left:0;
+    height: 2px;
+    width: 100%;
+    background-color: var(--color-primary);
+    transform: scaleX(0)    ;
+    -webkit-transform: scaleX(0)    ;
+    -moz-transform: scaleX(0)    ;
+    -ms-transform: scaleX(0)    ;
+    -o-transform: scaleX(0)    ;
+    transform-origin: left;
+    transition: transform .2s;
+    -webkit-transition: transform .2s;
+    -moz-transition: transform .2s;
+    -ms-transition: transform .2s;
+    -o-transition: transform .2s;
+}
+
+.c-currency:hover > .c-b::before {
+    transform: scaleX(.5)    ;
+    -webkit-transform: scaleX(.5)    ;
+    -moz-transform: scaleX(.5)    ;
+    -ms-transform: scaleX(.5)    ;
+    -o-transform: scaleX(.5)    ;
+}

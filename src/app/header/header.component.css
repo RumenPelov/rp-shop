@@ -1,8 +1,9 @@
   .bg-custom-color {
-    /* background-color: #3071a9; */ 
-    background: #1A548F;
+    /*backgroundColor: "#164682" */ 
+    /*background: #1A548F;*/
+    background-color: transparent;
     border: none;
-  }  
+  }
 
   .login_icon {
     height: 1em;
@@ -19,15 +20,15 @@
   }
 
   .cart_icon {
-    height: 1em;
-    width: 1em;
+    height: 2em;
+    width: 2em;
     margin-bottom: .2em;
     fill: currentColor ;
   }
 
   .menu_icon {
-    height: 2em;
-    width: 2em;
+    height: 1.9em;
+    width: 1.9em;
     fill: currentColor ;
   }
 
@@ -36,11 +37,45 @@
   }
 
   .text-custom-nav{
-    color: #cbd3da
+    color: #cbd3da;
   }
 
   .text-custom-nav:hover{
     color: #f8f9fa;
   }
 
+  .custom-cart {
+    background-color: transparent;
+    padding: 1px 4px;
+    border: none;
+    outline: none;
+    color: #bbb;
+  }
+  .custom-cart:hover{
+    color: #f8f9fa;
+  }
+
+  .custom-cart-items{
+    font-size: .8rem;
+    font-weight: 600;
+    height: .8rem;
+    width: .8rem;
+    border-radius: 50%    ;
+    -webkit-border-radius: 50%    ;
+    -moz-border-radius: 50%    ;
+    -ms-border-radius: 50%    ;
+    -o-border-radius: 50%    ;
+    background-color:  transparent;
+    color: #f7f9fb;
+    position: absolute;
+    top: 0rem;
+    left: .85rem;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .custom-relative{
+    position: relative;
+  }
 

@@ -158,11 +158,11 @@ function ItemDAO(database) {
         } 
     }
 
-    this.getRelatedItems = async () => {
+    this.getRelatedItems = async (category) => {
         "use strict";
 		try{
 			const relatedItems = await this.db.collection("item")
-								.find({})
+								.find({category})
 								.limit(4)
 								.toArray();
 			

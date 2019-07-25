@@ -1,23 +1,31 @@
-<nav aria-label="breadcrumb " class="">
-  <ol class="breadcrumb my-4 py-2" >
-    <li *ngFor="let param of params; let i = index " 
-         class="breadcrumb-item"
-         [ngClass]="{
-          'active flex-grow-1': i == params.length-1 }" 
-          >
-      <a *ngIf="param.route" class="text-custom" 
-         [routerLink]="param.route"
-         [queryParams]="param.query ? param.query : {}"
-      >
-        {{param.text}} 
-      </a>
-      <span *ngIf="!param.route" >
+<nav aria-label="breadcrumb " class=" ">
+  <ol class="breadcrumb my-3 px-0 px-sm-2 px-md-0 py-2 pb-md-4 
+             custom-backround flex-column flex-sm-row
+             align-items-center" >
+    <div class="d-flex flex-grow-1">
+      <li *ngFor="let param of params; let i = index " 
+          class="breadcrumb-item"
+          [ngClass]="{
+            'active flex-grow-1': i == params.length-1 }" 
+            >
+        <a *ngIf="param.route" class="text-custom" 
+          [routerLink]="param.route"
+          [queryParams]="param.query ? param.query : {}"
+        >
           {{param.text}} 
-      </span>
-    </li>
-    <span class=""
-          *ngIf="auth.loggedIn() && cartServ.getCart().total!=0" >
-            Cart total: {{cartServ.getCart().total|currency:'USD' }}
+        </a>
+        <span *ngIf="!param.route" >
+            {{param.text}} 
+        </span>
+      </li>
+    </div>
+    <span class="c-total mt-2 mt-sm-0" [routerLink]="['/user/cart']" 
+          *ngIf="total!=0" >
+          {{total|currency:'USD' }}
+          <svg class="c_icon  ">
+            <use xlink:href='assets/svg/sprite.svg#icon-shopping-cart'></use>
+          </svg>
+         
     </span>
   </ol>
 </nav>

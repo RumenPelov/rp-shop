@@ -23,6 +23,10 @@ export class AuthService {
     this.user=new User("");
    }
 
+   getUser() {
+    return this.user;
+  }
+
    setOptions(){
     const headers = new HttpHeaders({'Content-Type': 'application/json'});
     let options = {headers: headers, withCredentials: true};
@@ -61,13 +65,26 @@ export class AuthService {
     )
   }
 
-
   getCart(userId:String): Observable<any>{
     
     return this.http.get(this.Url+`/user/${userId}/cart`, this.jwt())
     .pipe(
       catchError((error) => Observable.throw(error) )
     )
+  }
+
+  //Resolve current guest cart and saved user cart on loggin in. 
+  onLoginResolveUserGuestCarts() {
+    const cart = this.cartServ.getSessionCartItem();
+    if(cart) {
+      const body = {cart}
+      return this.http.put(this.Url+`/user/${this.user.username}/cart/update`,body, this.jwt())
+        .pipe(
+          catchError((error) => Observable.throw(error) )
+        )
+    } 
+//console.log(this.getCart(this.user.username));
+    return this.getCart(this.user.username);
   }
 
   updateCart(quantity:Number, itemId:any): Observable<any>{
@@ -81,6 +98,15 @@ export class AuthService {
   addToCart(userId:String, itemId:string): Observable<any> {
     const body={};
     return this.http.post(this.Url+`/user/${this.user.username}/cart/items/${itemId}`,body, this.jwt())
+    .pipe(
+      catchError((error) => Observable.throw(error) )
+    );
+  }
+
+  billing(token: any, amount: number, name: string, email: string, address: object, cart: any) {
+    const body =  {token, amount, name, email, address, items: cart.items};
+    const user = this.user.username ? this.user.username : "guest";
+    return this.http.post(this.Url+`/user/${user}/billing`,body, this.jwt())
     .pipe(
       catchError((error) => Observable.throw(error) )
     );
@@ -116,12 +142,12 @@ export class AuthService {
 
     }else if(token  && this.jwtHelper.isTokenExpired(token)){
        sessionStorage.removeItem('token');
-       this.cartServ.resetCart();
+       //this.cartServ.resetCart();
     }
     if(!token){
       this.user['username']='';
       this.user['email']=null;
-      this.cartServ.resetCart();
+      //this.cartServ.resetCart();
     }
 
     this.checkExp();

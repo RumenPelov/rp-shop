@@ -25,6 +25,27 @@ function CartDAO(database) {
         }
     }
 
+    this.replaceCart = async (cart, userId) => {
+        "use strict"; 
+        const items = cart.items,
+              addresses = cart.addresses;
+        try{
+            const result = await this.db.collection("cart").findOneAndUpdate(
+                { _id: userId},
+                {_id: userId, items, addresses  },
+                {upsert: true, returnOriginal: false }); 
+
+            return new Promise((resolve, reject) => {
+				resolve(result.value);
+				});
+        } catch(error) {
+            console.log(error.errmsg);
+			return new Promise((resolve, reject) => {
+				reject(error);
+				});
+        }
+    }
+
     this.itemInCart = async (userId, itemId) => {
         "use strict";   
         try {

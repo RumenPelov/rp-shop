@@ -1,0 +1,32 @@
+.c-r-container{
+    background-color: transparent;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    box-shadow: 0 1px 2px -1px var(--color-primary);
+}
+
+.c-btn-outline{
+    color:  var(--color-primary);
+    padding: 6px 14px;
+    background-color: transparent;
+    border: 1px solid var(--color-primary);
+    outline: none;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+    transition: all .4s;
+    -webkit-transition: all .4s;
+    -moz-transition: all .4s;
+    -ms-transition: all .4s;
+    -o-transition: all .4s;
+}
+
+.c-btn-outline:hover{
+   color:  white;
+   background-color: var(--color-primary);
+}

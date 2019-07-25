@@ -11,12 +11,22 @@
 </head>
 <body>
   <app-root>Loading...</app-root>
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script type="text/javascript">
+   window.stripe = Stripe('pk_test_3GGzmiphAbXAJZG9CjQsQrbK00Uza5Zdqq');
+   window.elements = stripe.elements();
+ </script>
 </body>
+
 
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
   
   <!-- Bootstrap Core JavaScript -->
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+   <!-- Stripe payments -->
+
+
    
 </html>

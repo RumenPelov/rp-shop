@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from "../_services/auth.service";
 import { CartService } from "../_services/cart.service";
@@ -11,45 +11,38 @@ import { CartService } from "../_services/cart.service";
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  private subRout: Subscription;
   private subCart: Subscription;
-  private opt: Number[]=Array.from(Array(26).keys()).slice(1);
+  private subFetch: Subscription;
+  opt: Number[]=Array.from(Array(26).keys()).slice(1);
   cart: any;
+  emptyCart: boolean = false;
 
   constructor(private auth: AuthService,
-              private route: ActivatedRoute,
               private router: Router,
-              private cartServ:CartService) { 
-  
-              }
+              private cartServ:CartService) { }
 
   ngOnInit() {
-    this.subRout=this.route
-    .params
-    .subscribe(params => {
-      this.getCart(params['userId']);
-
+    if(this.auth.loggedIn()) {
+      const user = this.auth.getUser();
+      this.fetchCart(user.username);
       window.scrollTo(0, 0);
-    });
 
-    this.subCart=this.cartServ.cart$
-    .subscribe(cart =>{
-        this.cart=cart;
-    });
+    } else {
+      if(!this.auth.loggedIn()) {
+        this.cartServ.guestCartSession();
+      }
+    }
+    
+    this.subCart=this.cartServ.getCart()
+          .subscribe(cart =>{
+           // console.log(cart);
+            this.cart=cart;
+          }); 
+    
   }
 
-  getCart(username:String){
-    this.auth.getCart(username)
-    .subscribe(
-      data => {
-        this.updateCart(data);
-      },
-      error => console.error("error")
-    );
-  }
-
-  onChange(qty:any, itemId:any){
-    this.auth.updateCart(qty,itemId)
+  fetchCart(username:String){
+    this.subFetch=this.auth.getCart(username)
     .subscribe(
       data => {
         this.updateCart(data);
@@ -59,18 +52,43 @@ export class CartComponent implements OnInit {
   }
 
   updateCart(data:any){
-    var newCart={
-      username: data.username, 
-      updated: data.updated,
-      cart: data.cart,
-      total: data.total
+    var newCart={...data};
+
+     // console.log(newCart);
+    this.cartServ.setCart(newCart);
+  }
+
+  onChange(qty:any, itemId:any){
+    if(this.auth.loggedIn()) {
+      this.auth.updateCart(qty,itemId)
+      .subscribe(
+        data => {
+          this.updateCart(data);
+        },
+        error => console.error("error")
+      );
+    } else {
+      this.cartServ.guestCartUpdate(qty, itemId);
     }
-  this.cartServ.setCart(newCart);
+  }
+
+  openCheckout() {
+    if(this.cart.items.length === 0) {
+      this.emptyCart = true;
+      return;
+    }
+
+    if (this.auth.loggedIn()){
+      this.router.navigate([ 'user/' + this.auth.user.username+ '/cart/pay']);
+    } else {
+      this.router.navigate([ 'user/guest/cart/pay']);
+    }
   }
 
   ngOnDestroy() {
-    this.subRout.unsubscribe();
     this.subCart.unsubscribe();
+    if (this.subFetch){
+      this.subFetch.unsubscribe();
+    }
   }
-
 }

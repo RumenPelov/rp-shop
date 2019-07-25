@@ -1,0 +1,48 @@
+.custom-backround{
+    background: transparent !important;
+    display:flex;
+    justify-content: center;
+}
+
+.c-total{
+    color: var(--color-primary);
+    cursor: pointer;
+    position: relative;
+    font-weight: 480;
+}
+
+.c-total::before{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left:0;
+    height: 2px;
+    width: 100%;
+    background-color: var(--color-primary);
+    transform: scaleX(0)    ;
+    -webkit-transform: scaleX(0)    ;
+    -moz-transform: scaleX(0)    ;
+    -ms-transform: scaleX(0)    ;
+    -o-transform: scaleX(0)    ;
+    transform-origin: left;
+    transition: transform .2s;
+    -webkit-transition: transform .2s;
+    -moz-transition: transform .2s;
+    -ms-transition: transform .2s;
+    -o-transition: transform .2s;
+}
+
+.c-total:hover::before {
+    transform: scaleX(.5)    ;
+    -webkit-transform: scaleX(.5)    ;
+    -moz-transform: scaleX(.5)    ;
+    -ms-transform: scaleX(.5)    ;
+    -o-transform: scaleX(.5)    ;
+}
+
+.c_icon {
+    height: 1.2em;
+    width: 1.2em;
+    margin-bottom: .3em;
+    fill: var(--color-primary);
+  }

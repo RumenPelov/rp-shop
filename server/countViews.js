@@ -17,7 +17,8 @@ function countViews(database) {
         "use strict";
         const ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
         const date = new Date().toDateString();
-        const visited = date + ip;
+        const time = new Date().toTimeString().substring(0, 2);
+        const visited = date + " "+ time + "h " + ip;
         if (this.visited!== visited) {
 
             this.visited = visited;

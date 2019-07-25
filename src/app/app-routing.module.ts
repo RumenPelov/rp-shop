@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './search/search.component';
 import { ItemComponent } from './item/item.component';
 import { CartComponent } from './cart/cart.component';
+import { PaymentsComponent } from './payments/payments.component';
 
 import { OnlyLoggedInGuard } from "./_services/guards/only-logged-in-guard";
 
@@ -18,9 +19,14 @@ const routes: Routes = [
     component: ItemComponent
   },
   {
-    path: 'user/:userId/cart',
+    path: 'user/:userId/cart/pay',
+    component: PaymentsComponent,
+    canActivate: []
+  },
+  {
+    path: 'user/cart',
     component: CartComponent,
-    canActivate: [OnlyLoggedInGuard]
+    canActivate: []
   },
   {path: '**', component: HomeComponent}
 ];

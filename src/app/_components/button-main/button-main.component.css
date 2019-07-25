@@ -1,0 +1,22 @@
+.btn-custom-outline{
+    color:  var(--color-primary);
+    padding: 6px 8px 6px 16px;
+    background-color: transparent;
+    border: 1px solid var(--color-primary);
+    outline: none;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+    transition: all .4s;
+    -webkit-transition: all .4s;
+    -moz-transition: all .4s;
+    -ms-transition: all .4s;
+    -o-transition: all .4s;
+}
+
+.btn-custom-outline:hover{
+    color:  white;
+    background-color: var(--color-primary);
+}

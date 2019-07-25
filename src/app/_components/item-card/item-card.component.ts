@@ -12,10 +12,9 @@ export class ItemCardComponent implements OnInit {
   @Input() item: Item;
   @Input() data: ItemData;
   @Input() buttonText: string;
-  @Input() details: boolean = false;
   @Output() clicked = new EventEmitter<number>();
 
-  private sixStars: any = Array.from(Array(5).keys());
+  sixStars: any = Array.from(Array(5).keys());
   
   constructor() { }
 

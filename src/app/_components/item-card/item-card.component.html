@@ -1,24 +1,13 @@
   <!-- Item  -->  
 <div class="row">
   <div class="col-lg-7">
-    <a *ngIf="!details"  [routerLink]="['/item', item._id]"  >
-        <img class="img-fluid" src="assets{{item.img_url}}" alt="">
-    </a>
-    <div *ngIf="details">
+    <div>
         <img class="img-fluid" src="assets{{item.img_url}}" alt="">
     </div>
   </div>
-  <div class="col-lg-5 mt-3 mt-md-4 mt-lg-0 ">
-    
-    <div *ngIf="!details" >
-      <h4><a class="text-custom"
-        [routerLink]="['/item', item._id]" >{{item.title}}</a></h4>
-      <h5>{{item.slogan}}</h5>
-    </div>
-    
-    <h4 *ngIf="details" class="font-weight-normal">Product Description</h4>
-
-    <div *ngIf="details" class="rating-custom d-flex mb-2" >
+  <div class="col-lg-5 mt-3 mt-md-4 mt-lg-0 ">    
+    <h4 class="font-weight-normal">Product Description</h4>
+    <div class="rating-custom d-flex mb-2" >
       <div class="flex-grow-1">
         <span *ngFor="let num of sixStars">
           <svg class="star_icon" *ngIf="num >= data.stars" >
@@ -37,17 +26,16 @@
       </div>
     </div>
 
-    <p>{{item.description}}</p>
-
-    <button-main
-      (click)="clicked.emit(item._id)"
-      [text]="buttonText" 
-      [routerLink]="['/item', item._id]">
-    </button-main>
-
+    <p >{{item.description}}</p>
+    <div class="text-custom  py-4  c-card-details">
+      <h6>{{item.price | currency:'USD'}}</h6>
+      <button-main
+        (click)="clicked.emit(item._id)"
+        [text]="buttonText" 
+        [routerLink]="['/item', item._id]">
+      </button-main>
+    </div>    
   </div>
 </div>
     <!-- /.row -->
-<hr>
-
 
