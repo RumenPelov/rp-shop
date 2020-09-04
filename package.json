@@ -27,7 +27,7 @@
     "express": "^4.16.2",
     "express-jwt": "^5.3.0",
     "jsonwebtoken": "^8.1.0",
-    "mongodb": "^2.1.21",
+    "mongodb": "^3.1.13",
     "ngrok": "^3.1.1",
     "rxjs": "^6.4.0",
     "rxjs-compat": "^6.4.0",
